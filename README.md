@@ -99,4 +99,44 @@ O Docker fez uma solução onde integra namespace, Cgroups e File System que é 
         * Network
 
 
+## Conhecendo o WSL 2
+Docker foi construído e pensado para Linux, não para Windows ou Mac.
+
+Como se executava Docker no Windows?
+* Docker Toolbox
+    * Roda com VirtualBox
+    * É lento
+
+* Docker Desktop
+    * Rodar com Hyper-V (tecnologia de virtualização da Microsoft, concorrente do VirtualBox)
+    * Precisa da licença PRO do Windows
+    * Exige mais recursos da máquina
+    * Desempenho bem superior ao Toolbox
+
+### WSL (Windows Subsystem for Linux)
+#### WSL 1
+* Ambiente Linux embarcado dentro do Windows
+* Acesso a "quase" todos os comandos Linux
+* Acessos aos drivers C, D e etc.
+* Possibilidade de escolher distribuição do Linux: Debian, Ubuntu, OpenSuse, RedHat e etc.
+* Manipulação através do terminal, não há GUI.
+
+##### Problemas do WSL 1
+* Não ter Kernel completo do Linux
+* Desempenho ruim rodando aplicações dentro do Linux
+* Não ter suporte ao Docker
+* Vários problemas de compatibilidade com programas e ferramentas
+
+#### WSL 2
+* Execução completa do Kernel do Linux
+* Manipulação através do terminal, não há GUI
+* Grande desempenho executando aplicativos dentro do Linux
+* Suporte ao Docker e Kubernetes
+* Usa o Virtual Machine Platform como base para a execução
+
+[Acesse o guia de instalação do WSL 2 e do Docker](https://github.com/codeedu/wsl2-docker-quickstart)
+
+
+
+
 

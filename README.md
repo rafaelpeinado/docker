@@ -137,6 +137,26 @@ Como se executava Docker no Windows?
 [Acesse o guia de instalação do WSL 2 e do Docker](https://github.com/codeedu/wsl2-docker-quickstart)
 
 
+## Dicas truques com WSL2 e Windows Terminal
+Para não travar o terminal, porque tem um servidor rodando:
+
+**Obs.: Diferença entre terminal e Shell** - Shell é um programa que é usado para operar o Sistema Operacional para rodar comandos. O terminal é um agregado de Shell. O Windows nunca teve um terminal, só teve Shell que é o DOS e o PowerShell.
+
+cd /mnt/c para acessar a pasta do Windows
+cd /home/<nome-do-usuario> para acessar o Linux
+
+explorer.exe . (para abrir a pasta no explorer)
+
+
+**wsl -l -v** para listar as distribuições
+**wsl --shutdown** para parar a execução de todas
+**wsl** para entrar na distribuição padrão
+
+arquivo **.wslconfig** para limitar o uso de recursos do computador
+[wsl2]
+memory=8GB
+processors=6
+swap=1GB
 
 
 

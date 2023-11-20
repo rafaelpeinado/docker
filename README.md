@@ -348,9 +348,18 @@ Quando informamos o docker run --rm rafaelpeinado/hello:latest **bash**, por exe
 
 * docker run --rm rafaelpeinado/hello:latest Rafael
 
-
 ### Docker entrypoint exec
+Se eu quiser ver o entrypoint de alguma imagem, eu posso ir no DockerHub indo na imagem do [nginx](https://hub.docker.com/_/nginx) e clicar na tag que está usando, nesse caso o [latest](https://github.com/nginxinc/docker-nginx/blob/4bf0763f4977fff7e9648add59e0540088f3ca9f/mainline/debian/Dockerfile)
 
+* **LABEL:** escrever maintainer, por exemplo
+* **ENV:** para criar variáveis de ambiente
+* **EXPOSE:** para expor a porta
+
+No nginx temos o arquivos docker-entrypoint.sh que tem um exec $@"
+* Todo arquivo sh que tiver **exec $@"** significa que ele vai aceitar os parâmetros que vai ser passado depois desse arquivo docker-entrypoint. Esse exec executa os parâmetros na execução do arquivo.
+* docker run --rm -it nginx bash
+* ./docker-entrypoint.sh echo "hello"
+Isso quer dizer que se eu tirar o exec $@", o CMD não vai funcionar.
 
 ### Publicando imagem no DockerHub
 

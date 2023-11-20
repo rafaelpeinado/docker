@@ -370,3 +370,50 @@ Isso quer dizer que se eu tirar o exec $@", o CMD não vai funcionar.
 
 Se a imagem não tiver download por uns 90 dias, o Docker remove a imagem automaticamente do Hub.
 
+
+## Networks
+### Entendendo tipos de Network
+[Docker Network](https://docs.docker.com/network/)
+Podemos fazer um container se comunicar com o outro. Por exemplo, eu posso ter um container com SQL e outro com Laravel e fazer eles se comunicarem e, para isso, eles precisam estar na mesma rede.
+
+* **Bridge**
+  * Quando não informamos qual o tipo de Network que gostaríamos de fazer, ele escolhe bridge por padrão
+  * Usado para quando queremos que um container se comunique facilmente com o outro.
+
+* **Host**
+  * Mescla a network do Docker com a network do Host do Docker, por exemplo, minha máquina e um container podem se comunicar, sem precisar fazer exposição de porta.s
+
+* **Overlay**
+  * Não é comum e as vezes temos vários Dockers em diversas máquinas diferentes e precisamos fazer com que essas máquinas se comuniquem e que estejam na mesma rede.
+  * Um caso de uso bem comum é o [Docker Swarm](https://docs.docker.com/engine/swarm/) ele cria um cluster de vários Dockers para escalar a aplicação.
+
+* **Macvlan**
+  * Toda máquina tem um MAC Address e nesse caso podemos settar um MAC Address em um container e parecer simplesmente que é uma Network plugada na rede.
+
+* **none**
+  * Quando não quero conectar meu container e que rode de forma isolada
+
+### Trabalhando com bridge
+* docker network ls
+* docker run -d -it --name ubuntu1 bash
+* docker network inspect bridge
+
+* docker attach ubuntu1
+  * ip addr show
+  * ping 172.17.0.4
+  * ping ubuntu2 (não foi possível)
+
+* docker network create --driver bridge minharede
+* docker run -dit --name ubuntu1 --network minharede bash
+* docker run -dit --name ubuntu2 --network minharede bash
+* docker exec -it ubuntu1 bash
+  * ping ubuntu2 (agora o ping funcionou)
+* docker run -dit --name ubuntu3 bash
+  * docker exec -it ubuntu3 bash
+  * ping ubuntu2 (não funcionou)
+* docker network connect minharede ubuntu3
+  * docker exec -it ubuntu3 bash
+  * ping ubuntu2 (deu certo)
+* docker network inspect minharede 
+
+### Trabalhando com host

@@ -331,7 +331,27 @@ Nesse caso já começou por padrão na pasta /app
 
 * **USER**: o Dockerfile usa o root por padrão, mas podemos definir outros usuários
 
+### ENTRYPOINT vs CMD
+Depois de criar a imagem, precisamos fazer com que após que tudo tenha sido executado, precisamos fazer que algo execute para o processo funcionar.
+
+* docker ps -a -q
+  * q: exibe os IDs
+* docker rm $(docker ps -a -q) -f
+
+* docker run --rm <nome-do-usuario>/hello:latest echo "oi"
+  * Substituiu o echo Hello World pelo oi
+Quando informamos o docker run --rm rafaelpeinado/hello:latest **bash**, por exemplo, ele substitui tudo o que está no CMD pelo bash
+
+* **CMD:** é varíavel e substituível
+* **ENTRYPOINT:** é fixo
+**Obs.:** O CMD entra como parâmetro para o ENTRYPOINT
+
+* docker run --rm rafaelpeinado/hello:latest Rafael
 
 
+### Docker entrypoint exec
+
+
+### Publicando imagem no DockerHub
 
 

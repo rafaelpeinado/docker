@@ -417,3 +417,14 @@ Podemos fazer um container se comunicar com o outro. Por exemplo, eu posso ter u
 * docker network inspect minharede 
 
 ### Trabalhando com host
+* Juntar as redes da máquina virtual com o Docker (se fosse Linux, seria de fato a rede da máquina)
+* O Windows com WSL2 funciona como se fosse no Linux
+* docker run --rm -d --name nginx --network host nginx
+
+### Container acessando nossa máquina
+Quando estamos no container e precisamos acessar alguma porta do host
+* php -S 0.0.0.0:8000
+* docker run --rm -it --name ubuntu ubuntu bash
+  * apt-get update
+  * apt-get install curl -y
+  * curl http://host.docker.internal:8000 ou curl http://gateway.docker.internal:8000

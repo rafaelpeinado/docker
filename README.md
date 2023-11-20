@@ -158,5 +158,138 @@ memory=8GB
 processors=6
 swap=1GB
 
+Instalar **Remote Development**
+
+
+## Backup com WSL 2
+É uma máquina virtual Linux
+podemos acessar o %appdata% -> Local -> Packages -> CanonicalGroup (WSL 2) -> LocalState -> ext4.vhdx
+
+
+## Integrando Docker com WSL 2
+Docker Desktop -> Resources -> WSL Integration
+
+**wsl -d "docker-desktop"** para escutar o docker-desktop
+
+
+## Errata - Instalação do Docker no WSL/Windows
+[Rodando Docker no WSL 2 sem Docker Desktop](https://www.youtube.com/watch?v=wpdcGgRY5kk)
+[Docker Engine (Docker Nativo) diretamente instalado no WSL2](https://github.com/codeedu/wsl2-docker-quickstart#docker-engine-docker-nativo-diretamente-instalado-no-wsl2)
+
+
+## Código-fonte
+### Repositório
+[Repositório](https://github.com/devfullcycle/fc-devops-docker)
+
+
+## Iniciando com Docker
+### Hello World
+docker ps: comando para mostrar os containers que estão rodando na máquina
+docker run hello-world
+
+### Executando Ubuntu
+docker run roda uma imagem. A imagem possui uma configuração chamada entrypoint ou command. Nesse entrypoint ele vai chamar o executável.
+
+docker ps -a: mostra containers ativos e que já rodaram
+
+docker run -it ubuntu bash
+* docker run: roda alguma coisa
+* -it: parâmetros (pode ser -i -t)
+  * i: modo interativo: manter o stdin para manter o processo rodando
+  * t: tty: é para poder digitar no terminal
+* ubuntu: nome da imagem
+  * como não coloquei ubuntu:<versao-da-imagem>, ele executará o ubuntu:latest
+* bash: comando que vai ser executado no container depois que for baixado essa imagem
+
+**Ctrl + D:** sai do container
+
+* docker start <nome-do-container>: para iniciar algum container
+
+**Obs.:** o container é um processo e se o que mantém do processo funcionando (nesse exemplo é o bash), o container cai.
+
+* docker run -it --rm ubuntu bash
+  * rm: quando o processo finalizar, o container será removido automaticamente
+
+
+### Publicando portas com [nginx](https://www.nginx.com/)
+[Proxy reverso](https://www.cloudflare.com/pt-br/learning/cdn/glossary/reverse-proxy/) que funciona como um servidor web comum.
+
+* docker run nginx: ele disponibiliza a porta 80/tcp, porque é um web server
+    * A porta não fica disponível para acessar pelo navegador, porém se tivéssemos um outro container seria possível acessá-lo. Não conseguimos, porque somos host e não estamos na rede Docker.
+
+* docker run -p 8080:80 nginx
+    * p: publica (significa um apontamento, um redirecionamento de porta) a porta que queremos usar com a máquina que está executando o Docker
+    * **8080:80**: quando eu acessar a porta 8080 (http://localhost:8080/) da minha máquina, ele redirecionará para a porta 80 do container do nginx
+
+
+* docker run -d -p 80:80 nginx (se eu rodar 80, basta eu executar http://localhost)
+  * d: não trava o console, pois desassocia o processo do terminal
+
+
+### Removendo containers
+* docker stop <id-do-container>
+* docker start <id-do-container>
+* docker rm <id-do-container> ou docker rm <nome-do-container>
+    * não é possível parar um container que está executando, sendo assim devemos parar o container e apagar ou forcá-lo com docker rm <nome-do-container> -f
+
+
+### Acessando e alterando arquivos de um container
+* docker run -d --name nginx nginx
+    * name: para dar um nome ao container
+
+* docker run --name nginx -d -p 8080:80 nginx
+    * o nginx já está rodando e posso usar o comando **docker exec**
+
+* docker exec <nome-do-container> ls
+  * exec: para dar comandos a um container que já está rodando
+  * ls: comando de listar
+
+* docker exec -it nginx bash
+  * cd /usr/share/nginx/html/
+  * o index.html é o arquivo padrão
+
+* **Obs.:** Para deixar o container o mais leve possível o cache do apt-get vem vazio, então é necessário fazer um update com **apt-get update** e então instalar o vim com **apt-get install vim**.
+    * para edição precisa apertar i
+    * esc para sair do modo insert
+    * :w para write
+    * :q para sair
+    * Essas alterações que foram feitas dentro do container serão perdidas após matar o container, pois não é possível salvar na imagem, visto que ela é imutável.
+
+
+### Iniciando com bind mounts
+* Bind mounts montamos um volume que está no computador para dentro do container
+* docker run --name nginx -d -p 8080:80 -v /home/peinado/html/:/usr/share/nginx/html nginx
+    * v: com a ideia de montar um volume (um comando bem antigo e foi substituído por **--mount**)
+    * se eu editar o html/index.html que foi criado no /home/peinado ele será exibido no navegador
+
+É assim que mantemos o docker dentro do ambiente de desenvolvimento com php, nginx, python etc, mas o arquivo que estou mexendo está no meu computador e aí eu faço o bind para ver as mudanças.
+
+* docker run --name nginx -d -p 8080:80 --mount type=bind,source="$(pwd)"/html,target=/usr/share/nginx/html nginx
+  * type: é o tipo de mount
+  * source: a origem dos arquivos
+  * $(pwd): perca o caminho atual em que está, poderia usar o caminho completo também /home/peinado/html/
+  * target: o caminho onde vamos enviar os arquivos
+
+**Obs.:** quando usamos o -v, caso a pastar de origem não exista, ele cria no momento de fazer o direcionamento e quando usamos o --mount, ele dá erro, porque a pasta não existe.
+
+
+### Trabalhando com volumes
+O bind mount serve para montar a pasta de dentro do computador para dentro do container
+Volumes é específico e conseguimos criar especificamente no Docker
+
+* docker volume
+* docker volume ls
+* docker volume create meuvolume
+* docker volume inspect meuvolume
+
+* docker run --name nginx -d --mount type=volume,source=meuvolume,target=/app nginx
+    * Se eu criar algum arquivo dentro da pasta app e criar um nginx2, esse arquivo será exibido no nginx2 também, pois estou compartilhando esse volume entre os dois container
+* docker run --name nginx2 -d --mount type=volume,source=meuvolume,target=/app nginx
+* docker run --name nginx3 -d -v meuvolume:/app nginx
+
+As vezes estamos usando containers de terceiro e sistemas que acabamos configurando na nossa máquina e percebemos que a máquina está ficando lotada e não sabemos de onde vem os arquivos. Geralmente isso acontece quando o diretório de volume enchem e tudo o que não está sendo utilizado podemos fazer um prune.
+* docker volume prune
+  * mata tudo o que está dentro do volume
+
 
 

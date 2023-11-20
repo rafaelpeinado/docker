@@ -291,5 +291,47 @@ As vezes estamos usando containers de terceiro e sistemas que acabamos configura
 * docker volume prune
   * mata tudo o que está dentro do volume
 
+## Trabalhando com imagens
+### Entendendo imagens e DockerHub
+Tudo o que usamos no Docker são baseados em imagens (por exemplo: Ubuntu, nginx etc)
+[DockerHub](https://hub.docker.com/), aqui é onde fica o Container Docker Registry. É onde ficam todas as imagens do Docker.
+Os provedores de Cloud (AWS, Azure etc) têm o próprio Container Docker Registry e ficam armazenados de forma privada.
+
+* docker images: consigo ver quais imagens estão no meu computador
+* docker pull <nome-da-imagem>: baixa a imagem da máquina no computador
+  * docker pull php
+* docker pull php:rc-alpine
+  * rc-alpine: é uma tag específica do php que pode ser encontrado no DockerHub
+* docker rmi php:latest
+  * rmi: para remover uma imagem
+
+### Criando primeira imagem com Dockerfile
+[Dockerfile](./Dockerfile)
+Dockerfile define o passo a passo que precisa ser feito
+As vezes precisamos fazer alteração de algum arquivo dentro da imagem, por exemplo, o nginx já com o vim instalado
+
+* RUN apt-get install vim -y
+  * RUN: executa um comando
+  * -y: já confirma com sim quando fizer a instalação
+
+* docker build -t <nome-do-usuario>/nginx-com-vim:latest .  Para gerar a imagem no Docker
+  * -t: é o nome da imagem, no caso a tag
+  * <nome-do-usuario>: é meu nome de usuário no DockerHub
+  * .: para dizer que meu arquivo Docker file está na pasta atual
+
+* docker images e podemos ver que temos a imagem <nome-do-usuario>/nginx-com-vim
+* docker run -it <nome-do-usuario>/nginx-com-vim bash
+* vim oi (e abrimos o vim)
+
+### Avançando com Dockerfile
+* **WORKDIR:** é o diretório que vou trabalhar dentro do container. Quando criar o container, ele vai criar uma pasta dentro do container.
+* **COPY:** vai copiar a pasta html para a pasta html do nginx
+
+Nesse caso já começou por padrão na pasta /app
+
+* **USER**: o Dockerfile usa o root por padrão, mas podemos definir outros usuários
+
+
+
 
 

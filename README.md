@@ -143,7 +143,7 @@ Para não travar o terminal, porque tem um servidor rodando:
 **Obs.: Diferença entre terminal e Shell** - Shell é um programa que é usado para operar o Sistema Operacional para rodar comandos. O terminal é um agregado de Shell. O Windows nunca teve um terminal, só teve Shell que é o DOS e o PowerShell.
 
 cd /mnt/c para acessar a pasta do Windows
-cd /home/<nome-do-usuario> para acessar o Linux
+cd /home/rafaelpeinado para acessar o Linux
 
 explorer.exe . (para abrir a pasta no explorer)
 
@@ -314,13 +314,13 @@ As vezes precisamos fazer alteração de algum arquivo dentro da imagem, por exe
   * RUN: executa um comando
   * -y: já confirma com sim quando fizer a instalação
 
-* docker build -t <nome-do-usuario>/nginx-com-vim:latest .  Para gerar a imagem no Docker
+* docker build -t rafaelpeinado/nginx-com-vim:latest .  Para gerar a imagem no Docker
   * -t: é o nome da imagem, no caso a tag
-  * <nome-do-usuario>: é meu nome de usuário no DockerHub
+  * rafaelpeinado: é meu nome de usuário no DockerHub
   * .: para dizer que meu arquivo Docker file está na pasta atual
 
-* docker images e podemos ver que temos a imagem <nome-do-usuario>/nginx-com-vim
-* docker run -it <nome-do-usuario>/nginx-com-vim bash
+* docker images e podemos ver que temos a imagem rafaelpeinado/nginx-com-vim
+* docker run -it rafaelpeinado/nginx-com-vim bash
 * vim oi (e abrimos o vim)
 
 ### Avançando com Dockerfile
@@ -338,7 +338,7 @@ Depois de criar a imagem, precisamos fazer com que após que tudo tenha sido exe
   * q: exibe os IDs
 * docker rm $(docker ps -a -q) -f
 
-* docker run --rm <nome-do-usuario>/hello:latest echo "oi"
+* docker run --rm rafaelpeinado/hello:latest echo "oi"
   * Substituiu o echo Hello World pelo oi
 Quando informamos o docker run --rm rafaelpeinado/hello:latest **bash**, por exemplo, ele substitui tudo o que está no CMD pelo bash
 
@@ -362,5 +362,11 @@ No nginx temos o arquivos docker-entrypoint.sh que tem um exec $@"
 Isso quer dizer que se eu tirar o exec $@", o CMD não vai funcionar.
 
 ### Publicando imagem no DockerHub
+* docker run --rm -d -p 8080:80 rafaelpeinado/nginx-fullcycle
+* docker push rafaelpeinado/nginx-fullcycle
 
+* https://hub.docker.com/r/rafaelpeinado/nginx-fullcycle
+* https://hub.docker.com/u/rafaelpeinado
+
+Se a imagem não tiver download por uns 90 dias, o Docker remove a imagem automaticamente do Hub.
 

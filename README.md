@@ -447,3 +447,10 @@ Quando estamos no container e precisamos acessar alguma porta do host
 * docker run --rm --name laravel -p 8001:8001 rafaelpeinado/laravel --host=0.0.0.0 --port=8001
   * os comandos no final substituíra o CMD (command)
 
+
+### Criando aplicação Node.js sem o Node
+* docker run --rm -it -v $(pwd)/:/usr/src/app -p 3000:3000 node:15 bash
+
+* Tudo o que fizer na máquina vai aparecer no container e vice-versa
+* node index.js
+

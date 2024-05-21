@@ -428,3 +428,22 @@ Quando estamos no container e precisamos acessar alguma porta do host
   * apt-get update
   * apt-get install curl -y
   * curl http://host.docker.internal:8000 ou curl http://gateway.docker.internal:8000
+
+
+## Colocando em prática
+### Instalando framework em um container
+* docker run -it --name php php:7.4-cli bash
+* apt-get update
+
+
+### Ativando entrypoint e command
+* Quando usamos entrypoint, essa vai ser a entrada por padrão
+* COMMAND vai passar os comandos para o entrypoint
+
+* docker build -t rafaelpeinado/laravel:lastest .
+* docker run --rm --name laravel -p 8000:8000 rafaelpeinado/laravel
+* docker ps
+* docker logs laravel
+* docker run --rm --name laravel -p 8001:8001 rafaelpeinado/laravel --host=0.0.0.0 --port=8001
+  * os comandos no final substituíra o CMD (command)
+

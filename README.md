@@ -490,7 +490,13 @@ Quando estamos no container e precisamos acessar alguma porta do host
 
 
 ### Dependência entre containers
-- 
+``` yaml
+depends_on:
+      - db
+```
+
+- [Dockerize](https://github.com/jwilder/dockerize)
+- dockerize -wait tcp://db:3306
 
 
 ### Opções - Dependência entre containers

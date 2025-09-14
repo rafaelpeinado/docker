@@ -477,3 +477,38 @@ Quando estamos no container e precisamos acessar alguma porta do host
 - docker run -d --network laranet --name nginx -p 8080:80 rafaelpeinado/nginx:prod
 - docker logs nginx
 
+
+## Docker-compose
+### Iniciando com Docker-compose
+- [Docker compose](./docker-compose.yaml)
+- docker-compose up
+
+
+### Buildando images com Docker-compose
+- docker-compose ps
+- docker-compose up -d --build
+
+
+### Dependência entre containers
+- 
+
+
+### Opções - Dependência entre containers
+#### wait-for-it
+Na gravação do curso o Wesley utilizou o dockerize para realizar a sincronização entre serviços de containers Docker.
+
+Atualmente o dockerize funciona perfeitamente em ambientes Linux e Windows, mas no MacBook M1 recebemos relatos de problemas de compatibilidade, por isso estamos disponibilizando uma alternativa que supre 100% o uso em comparação ao dockerize e funciona em todas as arquiteturas citadas, além disto é bem mais leve que ele.
+
+Abaixo o repositório com informações sobre a configuração e pontos importantes sobre o wait-for-it.
+
+https://github.com/codeedu/docker-wait-for-it 
+
+
+#### docker - healthcheck
+Uma outro opção nativa do Docker é o healthcheck, com ele podemos verificar a integridade de um determinado container x e, caso ele esteja com o status = healthy, um container y pode se conectar à ele.
+
+No repositório abaixo temos mais informações sobre a utilização desta opção.
+
+https://github.com/devfullcycle/docker-healthcheck
+
+

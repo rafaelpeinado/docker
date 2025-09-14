@@ -454,3 +454,21 @@ Quando estamos no container e precisamos acessar alguma porta do host
 * Tudo o que fizer na máquina vai aparecer no container e vice-versa
 * node index.js
 
+
+### Gerando imagem da aplicação Node.js
+- [Dockerfile](./node/Dockerfile) 
+- docker build -t rafaelpeinado/hello-express .
+- docker run -p 3000:3000 rafaelpeinado/hello-express:latest
+- docker push rafaelpeinado/hello-express
+- docker build -t rafaelpeinado/hello-express . -f Dockerfile.prod
+
+
+## Otimizando imagens
+### Otimização utilizando Multistage Building
+- docker build -t rafaelpeinado/laravel:prod . -f Dockerfile.prod
+- docker images | grep laravel
+
+
+
+
+

@@ -469,6 +469,11 @@ Quando estamos no container e precisamos acessar alguma porta do host
 - docker images | grep laravel
 
 
-
-
+### Nginx como proxy reverso
+- docker build -t rafaelpeinado/nginx:prod . -f Dockerfile.prod
+- docker network list
+- docker network create laranet
+- docker run -d --network laranet --name laravel rafaelpeinado/laravel:prod
+- docker run -d --network laranet --name nginx -p 8080:80 rafaelpeinado/nginx:prod
+- docker logs nginx
 
